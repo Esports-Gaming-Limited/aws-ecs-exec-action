@@ -20,10 +20,9 @@ inputs:
     description: 'Comma separated list of environment variable _names_ that should be exported to the ECS container secrets'
   cpu:
     description: 'CPU allocation (in micro-units)'
-    default: 256
+    default: 0
   memory:
     description: 'Memory allocation'
-    default: 512
   exec_role:
     description: 'ECS Task Execution role to use when provisioning the ECS task (required when creating a new task definition)'
   task_role:
@@ -48,6 +47,8 @@ inputs:
     description: 'AWS IAM Role to assume (optional)'
   aws_external_id:
     description: 'External ID to use when assuming roles (optional)'
+  subnet_filter:
+    description: 'Name filter used to identity subnets in which to launch task (optional)'
 
 outputs:
   status:

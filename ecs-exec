@@ -32,10 +32,12 @@ DRY_RUN=
 WAIT=false
 TIMEOUT=
 ECS_CLUSTER='default'
+SUBNET_NAME_FILTER='*ecs-cluster-private*'
 while test "$#" -gt '0'; do
 	case "${1}" in
 	(-p|--profile)	export AWS_PROFILE="${2}";shift 1;;
 	(-c|--cluster)	ECS_CLUSTER="${2}";shift 1;;
+	(-s|--subnet)   SUBNET_NAME_FILTER="${2}";shift 1;;
 	(-d|--debug)	set -x;;
 	(-w|--wait)	WAIT=true;;
 	(--timeout)	TIMEOUT="--cli-read-timeout ${2}";shift 1;;
@@ -63,7 +65,7 @@ esac
 
 ## VPC/Subnet Json
 # Ideally we would lookup a default vpc first
-ECS_SUBNETS_JSON="$(aws ec2 describe-subnets --filters Name=tag:Name,Values=*ecs-cluster-private*)"
+ECS_SUBNETS_JSON="$(aws ec2 describe-subnets --filters Name=tag:Name,Values="${SUBNET_NAME_FILTER}")"
 ECS_SUBNETS="$(echo "${ECS_SUBNETS_JSON}"| jq -r .Subnets[].SubnetId)"
 ECS_SUBNETS_JSON='{"awsvpcConfiguration": {"assignPublicIp":"DISABLED","subnets": ['
 for subnet in ${ECS_SUBNETS}; do

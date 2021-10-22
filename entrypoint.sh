@@ -156,6 +156,11 @@ if test "${INPUT_DEBUG}" = 'true'; then
 	set -x
 fi
 
+SUBNET_FILTER=
+if test "${INPUT_SUBNET_FILTER}" != 'null'; then
+	SUBNET_FILTER='--subnet "'${INPUT_SUBNET_FILTER}'"'
+fi
+
 if test -z "${INPUT_NAME}"; then
 	INPUT_NAME="${GITHUB_REPOSITORY##*/}"
 else
@@ -212,4 +217,4 @@ fi
 
 ECS_EXEC_WAIT=
 ! "${INPUT_WAIT}" || ECS_EXEC_WAIT='--wait'
-exec /app/ecs-exec ${ECS_EXEC_DEBUG} ${ECS_EXEC_WAIT} --timeout "${INPUT_TIMEOUT}" --cluster "${INPUT_CLUSTER:=default}" "${INPUT_TASK_NAME}"
+exec /app/ecs-exec ${ECS_EXEC_DEBUG} ${ECS_EXEC_WAIT} --timeout "${INPUT_TIMEOUT}" --cluster "${INPUT_CLUSTER:=default}" ${SUBNET_FILTER} "${INPUT_TASK_NAME}"
