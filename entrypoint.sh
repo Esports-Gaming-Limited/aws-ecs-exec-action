@@ -174,7 +174,7 @@ CURRENT_TASK_JSON="$(aws ecs describe-task-definition --task-definition "${INPUT
 
 # Register a variation of the task if any parameters are specified
 UPDATE_TASK='false'
-for param in name image cpu memory command exec_role task_role; do
+for param in name image cpu memory command exec_role task_role secrets environment; do
 	eval new_param_val="\${INPUT_$(toupper "${param}")}"
 	old_param_val="$(task_param "${param}")"
 	if test -z "${new_param_val}"; then
@@ -185,8 +185,6 @@ for param in name image cpu memory command exec_role task_role; do
 		UPDATE_TASK='true'
 	fi
 done
-test "[$(environment "${INPUT_ENVIRONMENT}")]" = "$(task_param 'environment')" || UPDATE_TASK='true'
-test "[$(secrets "${INPUT_SECRETS}")]" = "$(task_param 'secrets')" || UPDATE_TASK='true'
 
 if test -z "${INPUT_IMAGE}"; then
        INPUT_IMAGE="$(aws_account_id).dkr.ecr.$(aws_region).amazonaws.com/${GITHUB_REPOSITORY##*/}:${INPUT_VERSION}"
