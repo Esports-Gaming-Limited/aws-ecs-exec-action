@@ -6,7 +6,7 @@ inputs:
     description: 'Project family this task is part of'
     required: true
   name:
-    description: 'Optional name to append to generated task. This helps avoid conflicts with existing task names in the same workflow.'
+    description: 'Optional name to use for the generated task. This helps avoid conflicts with existing task names in the same workflow.'
   image:
     description: 'Docker image to use when creating a task definition'
   version:

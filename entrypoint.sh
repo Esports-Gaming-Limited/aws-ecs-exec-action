@@ -163,8 +163,6 @@ fi
 
 if test -z "${INPUT_NAME}"; then
 	INPUT_NAME="${GITHUB_REPOSITORY##*/}"
-else
-	INPUT_NAME="${GITHUB_REPOSITORY##*/}-${INPUT_NAME}"
 fi
 
 ! test -z "${INPUT_TASK_NAME}" || INPUT_TASK_NAME="${INPUT_NAME}"
